@@ -1,6 +1,6 @@
 // firebase.js
 const admin = require('firebase-admin');
-const serviceAccount = require('./connecta-f12c3-firebase-adminsdk-fbsvc-c43848b803.json');
+const serviceAccount = require('./connecta-f12c3-firebase-adminsdk-fbsvc-1dca2bad83.json');
 
 if (!admin.apps.length) {
   admin.initializeApp({

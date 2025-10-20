@@ -1,32 +1,30 @@
-const nodemailer = require("nodemailer");
+const fetch = require("node-fetch"); // install with: npm install node-fetch@2
 
 async function sendEmail(toEmail, subject, message) {
   try {
-    // SMTP transport config
-    const transporter = nodemailer.createTransport({
-      host: "mail.connecta.uk",  
-      port: 465,
-      secure: true, 
-      auth: {
-        user: "customer@connecta.uk",
-        pass: "Admin2025!",
+    const response = await fetch("https://connecta.uk/send_email.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        email: toEmail,
+        subject: subject,
+        message: message,
+      }),
     });
 
-    await transporter.verify();
+    const result = await response.json();
 
-    // Send email
-    const info = await transporter.sendMail({
-      from: '"Connecta" <customer@connecta.uk>',
-      to: toEmail,
-      subject,
-      html: message, // send HTML content
-    });
-
-    console.log("✅ Email sent:", info.messageId);
-    return true;
+    if (result.status === "success") {
+      console.log("✅ Email sent successfully:", result.message);
+      return true;
+    } else {
+      console.error("❌ Failed to send email:", result.message);
+      return false;
+    }
   } catch (error) {
-    console.error("❌ Error sending email:", error.message);
+    console.error("🌐 Network error while sending email:", error.message);
     return false;
   }
 }

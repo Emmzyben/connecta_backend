@@ -27,8 +27,14 @@ app.use('/api/matches', matchesRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 
+// Base route
 app.get('/', (req, res) => {
   res.send('Connecta Backend is running');
+});
+
+// ✅ Keep-alive route for Render
+app.get('/ping', (req, res) => {
+  res.status(200).send('Server is awake 🔥');
 });
 
 app.listen(PORT, () => {
